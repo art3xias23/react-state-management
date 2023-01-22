@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "./services/useFetch";
 import Spinner from "./Spinner";
 import PageNotFound from "./PageNotFound";
@@ -8,6 +8,7 @@ export default function Detail() {
     const {id} = useParams();
     console.log(`Id: ${id}`)
     const {data: product, loading, error} = useFetch(`products/${id}`)
+    const navigate = useNavigate();
 
     console.log("Data: ");
     console.dir(product);
@@ -21,6 +22,11 @@ export default function Detail() {
       <h1>{product.name}</h1>
       <p>{product.description}</p>
       <p id="price">${product.price}</p>
+      <p>
+        <button className="btn btn-primary" onClick={() => navigate("/cart")}>
+            Add to Cart
+        </button>
+      </p>
       <img src={`/images/${product.image}`} alt={product.category} />
     </div>
   );
