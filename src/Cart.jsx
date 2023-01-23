@@ -42,10 +42,14 @@ export default function Cart({ cart, updateQuantity }) {
   if (loading) return <Spinner />;
   if (error) throw error;
 
+  const numItemsInCart = cart.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0)
+
   return (
+    <>
     <section id="cart">
-      <h1>Cart</h1>
+      <h1>{numItemsInCart === 0 ? "Your cart is empty" : numItemsInCart > 1 ? numItemsInCart + " items" : numItemsInCart + " item"}  cart</h1>
       <ul>{cart.map(renderItem)}</ul>
     </section>
+    </>
   );
 }
