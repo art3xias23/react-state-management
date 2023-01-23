@@ -17,9 +17,18 @@ export default function App() {
         return items.map((i) =>
           i.sku === sku ? { ...i, quantity: i.quantity + 1 } : i
         );
-      } else{
-        return [...items, {id, sku, quantity:1}]
+      } else {
+        return [...items, { id, sku, quantity: 1 }];
       }
+    });
+  }
+
+  function updateQuantity(sku, quantity) {
+    setCart((items) => {
+      const newItems = items.map((item) =>
+        item.sku === sku ? { ...item, quantity: quantity } : item
+      );
+      return newItems.filter((item) => item.quantity !== 0);
     });
   }
 
@@ -31,8 +40,14 @@ export default function App() {
           <Routes>
             <Route path="/" element={<h1>Welcome to Carved Rock Fitness</h1>} />
             <Route path="/:category" element={<Products />} />
-            <Route path="/:category/:id" element={<Detail addToCart={addToCart} />} />
-            <Route path="/cart" element={<Cart cart={cart} />} />
+            <Route
+              path="/:category/:id"
+              element={<Detail addToCart={addToCart} />}
+            />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} updateQuantity={updateQuantity} />}
+            />
           </Routes>
         </main>
       </div>
