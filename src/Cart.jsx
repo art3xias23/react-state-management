@@ -3,7 +3,7 @@ import useFetchAll from "./services/useFetchAll";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 
-export default function Cart({ cart, updateQuantity }) {
+export default function Cart({ cart, dispatch }) {
   const navigate = useNavigate();
   const urls = cart.map((i) => `products/${i.id}`);
   const { data: products, loading, error } = useFetchAll(urls);
@@ -25,7 +25,10 @@ export default function Cart({ cart, updateQuantity }) {
           <p>
             <select
               aria-label={`Select quantity for ${name} size ${size}`}
-              onChange={(e) => updateQuantity(sku, parseInt(e.target.value))}
+              onChange={(e) => {
+                const quantity = parseInt(e.target.value);
+                dispatch({ type: "updateQuantity", sku, quantity });
+              }}
               value={quantity}
             >
               <option value="0">Remove</option>
@@ -44,15 +47,30 @@ export default function Cart({ cart, updateQuantity }) {
   if (loading) return <Spinner />;
   if (error) throw error;
 
-  const numItemsInCart = cart.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0)
+  const numItemsInCart = cart.reduce(
+    (previousValue, currentValue) => previousValue + currentValue.quantity,
+    0
+  );
 
   return (
     <>
-    <section id="cart">
-      <h1>{numItemsInCart === 0 ? "Your cart is empty" : numItemsInCart > 1 ? numItemsInCart + " items" : numItemsInCart + " item"} </h1>
-      <ul>{cart.map(renderItem)}</ul>
-      <button disabled={numItemsInCart === 0} className="btn btn-primary" onClick={() => navigate("/checkout")}>Checkout</button>
-    </section>
+      <section id="cart">
+        <h1>
+          {numItemsInCart === 0
+            ? "Your cart is empty"
+            : numItemsInCart > 1
+            ? numItemsInCart + " items"
+            : numItemsInCart + " item"}{" "}
+        </h1>
+        <ul>{cart.map(renderItem)}</ul>
+        <button
+          disabled={numItemsInCart === 0}
+          className="btn btn-primary"
+          onClick={() => navigate("/checkout")}
+        >
+          Checkout
+        </button>
+      </section>
     </>
   );
 }
