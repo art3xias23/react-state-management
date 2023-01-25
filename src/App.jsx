@@ -20,32 +20,6 @@ export default function App() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  function addToCart(id, sku) {
-    setCart((items) => {
-      const itemInCart = items.find((i) => i.sku === sku);
-      if (itemInCart) {
-        return items.map((i) =>
-          i.sku === sku ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      } else {
-        return [...items, { id, sku, quantity: 1 }];
-      }
-    });
-  }
-
-  function updateQuantity(sku, quantity) {
-    setCart((items) => {
-      const newItems = items.map((item) =>
-        item.sku === sku ? { ...item, quantity: quantity } : item
-      );
-      return newItems.filter((item) => item.quantity !== 0);
-    });
-  }
-
-  function emptyCart(){
-    setCart([]);
-  }
-
   return (
     <>
       <div className="content">
