@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCart } from "./CartContext";
 import { saveShippingAddress } from "./services/shippingService";
 
 // Declaring outside component to avoid recreation on each render
@@ -14,12 +15,12 @@ const STATUS = {
   COMPLETED: "COMPLETED",
 };
 
-export default function Checkout({ cart, dispatch }) {
+export default function Checkout() {
   const [address, setAddress] = useState(emptyAddress);
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
   const [touched, setTouched] = useState({});
-
+const { cart, dispatch } = useCart();
   //Derived state
   const errors = getErrors(address);
   const isValid = Object.keys(errors).length === 0;

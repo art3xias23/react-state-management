@@ -3,12 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "./services/useFetch";
 import Spinner from "./Spinner";
 import PageNotFound from "./PageNotFound";
+import { useCart } from "./CartContext";
 
-export default function Detail(props) {
+export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [sku, setSku] = useState("");
   const { data: product, loading, error } = useFetch(`products/${id}`);
+  const {dispatch} = useCart();
 
   if (loading) return <Spinner />;
   if (!product) return <PageNotFound />;
@@ -34,7 +36,7 @@ export default function Detail(props) {
           disabled={!sku}
           className="btn btn-primary"
           onClick={() => {
-            props.dispatch({type: "add",id, sku});
+            dispatch({type: "add",id, sku});
             navigate("/cart");
           }}
         >

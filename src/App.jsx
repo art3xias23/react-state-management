@@ -7,13 +7,13 @@ import { Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
 import Detail from "./Detail";
 import Checkout from "./Checkout";
-import { CartContext } from "./CartContext";
+import { useCart } from "./CartContext";
 
 export default function App() {
-
+  const { cart, dispatch } = useCart();
 
   return (
-    <CartContext.Provider value={{cart, dispatch}}>
+    <>
       <div className="content">
         <Header />
         <main>
@@ -22,17 +22,17 @@ export default function App() {
             <Route path="/:category" element={<Products />} />
             <Route
               path="/:category/:id"
-              element={<Detail dispatch={dispatch} />}
+              element={<Detail />}
             />
+            <Route path="/cart" element={<Cart />} />
             <Route
-              path="/cart"
-              element={<Cart />}
+              path="/checkout"
+              element={<Checkout/>}
             />
-            <Route path="/checkout" element={<Checkout cart={cart} dispatch={dispatch}/>} />
           </Routes>
         </main>
       </div>
       <Footer />
-    </CartContext.Provider>
+    </>
   );
 }
