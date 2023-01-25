@@ -8,6 +8,7 @@ import Cart from "./Cart";
 import Detail from "./Detail";
 import Checkout from "./Checkout";
 import cartReducer from "./cartReducer";
+import { CartContext } from "./CartContext";
 
 let initialCart;
   try {
@@ -23,7 +24,7 @@ export default function App() {
   }, [cart]);
 
   return (
-    <>
+    <CartContext.Provider value={{cart, dispatch}}>
       <div className="content">
         <Header />
         <main>
@@ -36,13 +37,13 @@ export default function App() {
             />
             <Route
               path="/cart"
-              element={<Cart cart={cart} dispatch={dispatch} />}
+              element={<Cart />}
             />
             <Route path="/checkout" element={<Checkout cart={cart} dispatch={dispatch}/>} />
           </Routes>
         </main>
       </div>
       <Footer />
-    </>
+    </CartContext.Provider>
   );
 }
