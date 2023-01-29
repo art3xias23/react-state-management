@@ -10,7 +10,7 @@ import Checkout from "./Checkout";
 import { useCart } from "./CartContext";
 
 export default function App() {
-  const { cart, dispatch } = useCart();
+  const { dispatch } = useCart();
 
   return (
     <>
@@ -27,8 +27,7 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/checkout"
-              element={<Checkout/>}
-            />
+              element={<Checkout dispatch={dispatch}/>}/>
           </Routes>
         </main>
       </div>
