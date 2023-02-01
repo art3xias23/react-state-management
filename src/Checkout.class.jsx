@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { saveShippingAddress } from "./services/shippingService";
 
 // Declaring outside component to avoid recreation on each render
@@ -22,43 +22,53 @@ export default class Checkout extends React.Component {
     touched: {},
   };
   isValid() {
-    const errors = getErrors(this.state.address);
-    const isVald = Object.keys(errors).length === 0;
+    const errors = this.getErrors(this.state.address);
+    const isValid = Object.keys(errors).length === 0;
     return isValid;
   }
   //Derived state
 
-  handleChange(e) {
+  handleChange = (e) => {
     e.persist();
-    setAddress((currentAddress) => {
-      return { ...currentAddress, [e.target.id]: e.target.value };
-    });
-  }
-
-  handleBlur(event) {
-    event.persist();
-    setTouched((current) => {
+    this.setState((state) => {
       return {
-        ...current,
-        [event.target.id]: true,
+        address: {
+          ...state.address,
+          [e.target.id]: e.target.value,
+        },
       };
     });
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();
-    setStatus(STATUS.SUBMITTING);
+  //Update state for touched. 
+  //Set it to a copy of the current value of touched, 
+  //but set an extra property based on the id passed in
+  handleBlur = (event) => {
+    event.persist();
+    this.setState((state) => {
+      return {
+        touched: {
+          ...state.touched,
+          [event.target.id]: true,
+        },
+      };
+    });
+  }
 
-    if (isValid) {
+   handleSubmit = async(event) => {
+    event.preventDefault();
+    this.setState({status:STATUS.SUBMITTING});
+
+    if (this.isValid()) {
       try {
-        await saveShippingAddress(address);
+        await saveShippingAddress(this.state.address);
         this.props.dispatch({ type: "empty" });
-        setStatus(STATUS.COMPLETED);
-      } catch (error) {
-        setError(error);
+        this.setState({status:STATUS.COMPLETED});
+      } catch (e) {
+        this.setState({error: e});
       }
     } else {
-      setStatus(STATUS.SUBMITTED);
+      this.setState({state:STATUS.SUBMITTED});
     }
   }
 
@@ -67,10 +77,13 @@ export default class Checkout extends React.Component {
 
     if (!address.city) result.city = "City is required";
     if (!address.country) result.country = "Country is required";
-
+console.log("ERRORS: ", result)
     return result;
   }
   render() {
+    // Derived state
+    const {status, error, address, touched} = this.state;
+    const errors = this.getErrors(this.state.address);
     if (error) throw error;
     if (status === STATUS.COMPLETED) {
       return <h1>Thanks for shopping!</h1>;
@@ -79,7 +92,7 @@ export default class Checkout extends React.Component {
     return (
       <>
         <h1>Shipping Info</h1>
-        {!isValid && status === STATUS.SUBMITTED && (
+        {!this.isValid() && status === STATUS.SUBMITTED && (
           <div role="alert">
             <p>Please fix the following errors</p>
             <ul>
@@ -89,7 +102,7 @@ export default class Checkout extends React.Component {
             </ul>
           </div>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <div>
             <label htmlFor="city">City</label>
             <br />
@@ -97,8 +110,8 @@ export default class Checkout extends React.Component {
               id="city"
               type="text"
               value={address.city}
-              onBlur={handleBlur}
-              onChange={handleChange}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
             />
 
             <p role="alert">
@@ -112,8 +125,8 @@ export default class Checkout extends React.Component {
             <select
               id="country"
               value={address.country}
-              onBlur={handleBlur}
-              onChange={handleChange}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
             >
               <option value="">Select Country</option>
               <option value="China">China</option>
@@ -132,7 +145,7 @@ export default class Checkout extends React.Component {
               type="submit"
               className="btn btn-primary"
               value="Save Shipping Info"
-              disabled={status === STATUS.SUBMITTING}
+              disabled={this.state.status === STATUS.SUBMITTING}
             />
           </div>
         </form>
