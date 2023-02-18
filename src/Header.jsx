@@ -19,6 +19,9 @@ export default function Header() {
             <NavLink activeStyle={activeStyle} to="/shoes">Shoes</NavLink>
           </li>
           <li>
+            <NavLink activeStyle={activeStyle} to="/bags">Bags</NavLink>
+          </li>
+          <li>
             <NavLink activeStyle={activeStyle} to="/cart">Cart</NavLink>
           </li>
         </ul>

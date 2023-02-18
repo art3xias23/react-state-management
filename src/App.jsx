@@ -5,7 +5,7 @@ import Header from "./Header";
 import Products from "./Products";
 import { Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
-import Detail from "./Detail.class";
+import Detail from "./Detail";
 import Checkout from "./Checkout.class";
 import { useCart } from "./CartContext";
 
