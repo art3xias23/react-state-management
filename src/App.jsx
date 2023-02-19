@@ -6,7 +6,8 @@ import Products from "./Products";
 import { Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
 import Detail from "./Detail";
-import Checkout from "./Checkout.class";
+import Checkout from "./Checkout";
+import PaymentInfo from "./PaymentInfo";
 import { useCart } from "./CartContext";
 
 export default function App() {
@@ -27,7 +28,10 @@ export default function App() {
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/checkout"
-              element={<Checkout dispatch={dispatch}/>}/>
+              element={<Checkout />}/>
+            <Route
+              path="/payment"
+              element={<PaymentInfo />}/>
           </Routes>
         </main>
       </div>

@@ -67,11 +67,11 @@
       "skus": [
         {
           "sku": "20",
-          "size": 18 
+          "size": 18
         },
         {
           "sku": "21",
-          "size": 19 
+          "size": 19
         }
       ],
       "description": "You have two bags in the picture!"
@@ -81,15 +81,15 @@
       "category": "bags",
       "image": "backpack2.jpg",
       "name": "Helmet",
-      "price": 109.00,
+      "price": 109,
       "skus": [
         {
           "sku": "30",
-          "size": 23 
+          "size": 23
         },
         {
           "sku": "31",
-          "size": 25 
+          "size": 25
         }
       ],
       "description": "You have a helmet in the picture!"
@@ -115,6 +115,26 @@
       "city": "fdsfdsfds",
       "country": "China",
       "id": 4
+    },
+    {
+      "city": "dsadsa",
+      "country": "India",
+      "id": 5
+    },
+    {
+      "city": "fds",
+      "country": "China",
+      "id": 6
+    },
+    {
+      "city": "fds",
+      "country": "China",
+      "id": 7
+    },
+    {
+      "city": "dsadsa",
+      "country": "China",
+      "id": 8
     }
   ]
 }

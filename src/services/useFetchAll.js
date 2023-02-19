@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import {useQuery} from 'react-query'
 
 export default function useFetchAll(urls) {
   const prevUrls = useRef([]);
@@ -6,9 +7,13 @@ export default function useFetchAll(urls) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(`made a call to use fetch. Count of urls: ${urls.length}`);
+
   useEffect(() => {
+    console.log("We inside useEffect")
+    prevUrls.current.map((x) => console.log(`Url: ${x}`));
     // Only run if the array of urls passed changes
-    if(areEqual(prevUrls.current, urls)) {
+    if (areEqual(prevUrls.current, urls)) {
       setLoading(false);
       return;
     }
@@ -33,6 +38,9 @@ export default function useFetchAll(urls) {
   return { data, loading, error };
 }
 
-function areEqual(array1, array2){
-  return (array1.length === array2.length && array1.every((value, index) => value === array2[index]))
+function areEqual(array1, array2) {
+  return (
+    array1.length === array2.length &&
+    array1.every((value, index) => value === array2[index])
+  );
 }

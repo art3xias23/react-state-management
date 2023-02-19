@@ -8,6 +8,7 @@ export default function Cart() {
   const {cart, dispatch} = useCart();
   const navigate = useNavigate();
   const urls = cart.map((i) => `products/${i.id}`);
+  console.log("Making a call to useFetch");
   const { data: products, loading, error } = useFetchAll(urls);
 
   function renderItem(itemInCart) {

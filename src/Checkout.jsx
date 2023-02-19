@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { saveShippingAddress } from "./services/shippingService";
 
@@ -21,6 +22,7 @@ export default function Checkout() {
   const [error, setError] = useState(null);
   const [touched, setTouched] = useState({});
 const { cart, dispatch } = useCart();
+const navigate = useNavigate();
   //Derived state
   const errors = getErrors(address);
   const isValid = Object.keys(errors).length === 0;
@@ -69,7 +71,7 @@ const { cart, dispatch } = useCart();
 
   if (error) throw error;
   if (status === STATUS.COMPLETED) {
-    return <h1>Thanks for shopping!</h1>;
+    navigate("/payment")
   }
 
   return (
